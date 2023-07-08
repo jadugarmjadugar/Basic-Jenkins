@@ -1,0 +1,22 @@
+pipeline{
+    agent any
+    stages{    
+        stage('SCM') {
+            steps{
+                checkout([$class: 'GitSCM',
+                branches: [[name: 'main']],  
+                extensions: [[$class: 'CleanCheckout']],
+                userRemoteConfigs: [[url: 'https://github.com/edureka27/webapp.git']]]) //sample URL
+            }
+        }
+        stage('SonarQube Analysis') {
+            steps{
+                script{
+                    def mvn = tool 'Maven'
+                    sh "${mvn}/bin/mvn clean'"
+                    }
+                }    
+            }    
+        }
+    } 
+}
